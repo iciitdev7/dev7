@@ -159,6 +159,26 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const signInAsDemo = async () => {
+    try {
+      const demoUser = {
+        id: 'demo-user-' + Date.now(),
+        email: 'demo@salesmind.app',
+        user_metadata: {
+          name: 'demo',
+          full_name: 'Demo User'
+        }
+      };
+
+      setUser(demoUser);
+      setAuthMethod('demo');
+
+      return { data: { user: demoUser }, error: null };
+    } catch (error) {
+      return { data: null, error };
+    }
+  };
+
   const value = {
     user,
     session,
@@ -168,6 +188,7 @@ export function AuthProvider({ children }) {
     signIn,
     signInWithGoogle,
     signInWithKeycloak,
+    signInAsDemo,
     signOut,
     resetPassword,
     isKeycloakConfigured: isKeycloakConfigured()

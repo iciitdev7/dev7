@@ -14,7 +14,7 @@ import LanguageToggle from '../../components/LanguageToggle';
 
 export default function AuthPage() {
   const router = useRouter();
-  const { signUp, signIn, signInWithGoogle, signInWithKeycloak, resetPassword, isKeycloakConfigured } = useAuth();
+  const { signUp, signIn, signInWithGoogle, signInWithKeycloak, signInAsDemo, resetPassword, isKeycloakConfigured } = useAuth();
   const { t } = useLanguage();
 
   const [mode, setMode] = useState('signin'); // signin, signup, reset
@@ -143,6 +143,29 @@ export default function AuthPage() {
       }
     } catch (error) {
       setMessage({ type: 'error', text: t('auth.unexpectedError') });
+      setLoading(false);
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      const { data, error } = await signInAsDemo();
+
+      if (error) {
+        setMessage({ type: 'error', text: getErrorMessage(error.message) });
+      } else {
+        setMessage({
+          type: 'success',
+          text: t('auth.signInSuccess')
+        });
+        setTimeout(() => router.push('/dashboard'), 1000);
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: t('auth.unexpectedError') });
+    } finally {
       setLoading(false);
     }
   };
@@ -434,6 +457,42 @@ export default function AuthPage() {
                       </Button>
                     </>
                   )}
+
+                  <div className="relative my-4">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-white px-2 text-muted-foreground">
+                        {t('auth.orContinueWith')}
+                      </span>
+                    </div>
+                  </div>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleDemoLogin}
+                    disabled={loading}
+                    className="w-full border-green-500 hover:bg-green-50"
+                    size="lg"
+                  >
+                    {loading ? (
+                      <div className="flex items-center space-x-2">
+                        <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                        <span>{t('auth.processing')}</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center space-x-2">
+                        <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span className="text-green-600 font-medium">
+                          {t('auth.loginAsDemo')}
+                        </span>
+                      </div>
+                    )}
+                  </Button>
                 </>
               )}
 

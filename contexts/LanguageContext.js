@@ -93,6 +93,7 @@ const en = {
     secureAuth: 'Your data is encrypted and secure',
     orContinueWith: 'or continue with',
     corporateUsers: 'Corporate Users',
+    loginAsDemo: 'Login as demo',
     // Success messages
     signUpSuccess: 'Account created successfully! Redirecting to dashboard...',
     signInSuccess: 'Welcome back! Redirecting to dashboard...',
@@ -592,6 +593,7 @@ const ru = {
     secureAuth: 'Ваши данные зашифрованы и защищены',
     orContinueWith: 'или продолжить с',
     corporateUsers: 'Корпоративные пользователи',
+    loginAsDemo: 'Войти как демо',
     // Success messages
     signUpSuccess: 'Аккаунт создан успешно! Перенаправление на панель управления...',
     signInSuccess: 'Добро пожаловать! Перенаправление на панель управления...',
