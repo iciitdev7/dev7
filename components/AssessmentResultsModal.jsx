@@ -10,10 +10,9 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '../contexts/LanguageContext';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
 
 const getScoreColor = (score) => {
   if (score >= 80) return 'text-green-600';
@@ -22,11 +21,11 @@ const getScoreColor = (score) => {
   return 'text-red-600';
 };
 
-const getScoreBgColor = (score) => {
-  if (score >= 80) return 'bg-green-100';
-  if (score >= 60) return 'bg-blue-100';
-  if (score >= 40) return 'bg-yellow-100';
-  return 'bg-red-100';
+const getRadarColor = (score) => {
+  if (score >= 80) return '#16a34a';
+  if (score >= 60) return '#2563eb';
+  if (score >= 40) return '#ca8a04';
+  return '#dc2626';
 };
 
 export default function AssessmentResultsModal({ isOpen, onClose, categoryScores }) {
@@ -36,21 +35,19 @@ export default function AssessmentResultsModal({ isOpen, onClose, categoryScores
 
   const categories = Object.entries(categoryScores).map(([name, score]) => {
     const roundedScore = Math.round(score);
-    const feedback = {
-      strengths: roundedScore >= 70 ? t(`categoryFeedback.${name}.strengths`) : null,
-      weaknesses: roundedScore < 70 ? t(`categoryFeedback.${name}.weaknesses`) : null,
-    };
 
     return {
       name,
       score: roundedScore,
-      feedback,
+      displayName: t(`categoryNames.${name}`),
     };
   });
 
-  const sortedCategories = [...categories].sort((a, b) => b.score - a.score);
-  const strengths = sortedCategories.filter(c => c.score >= 70);
-  const areasForDevelopment = sortedCategories.filter(c => c.score < 70);
+  const radarData = categories.map(cat => ({
+    category: cat.displayName,
+    score: cat.score,
+    fullMark: 10,
+  }));
 
   const overallScore = Math.round(
     categories.reduce((sum, c) => sum + c.score, 0) / categories.length
@@ -83,96 +80,46 @@ export default function AssessmentResultsModal({ isOpen, onClose, categoryScores
             </CardContent>
           </Card>
 
-          <div>
-            <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-600" />
-              {t('assessmentResults.yourStrengths')}
-            </h3>
-            {strengths.length > 0 ? (
-              <div className="space-y-3">
-                {strengths.map((category) => (
-                  <Card key={category.name} className="bg-green-50">
-                    <CardContent className="pt-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-semibold">
-                          {t(`categoryNames.${category.name}`)}
-                        </span>
-                        <Badge className={`${getScoreBgColor(category.score)} ${getScoreColor(category.score)}`}>
-                          {category.score}/10
-                        </Badge>
-                      </div>
-                      {category.feedback.strengths && (
-                        <p className="text-sm text-gray-700 mt-2">
-                          {category.feedback.strengths}
-                        </p>
-                      )}
-                    </CardContent>
-                  </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <h3 className="text-lg font-semibold mb-4 text-center">
+                {t('assessmentResults.categoryBreakdown')}
+              </h3>
+              <ResponsiveContainer width="100%" height={400}>
+                <RadarChart data={radarData}>
+                  <PolarGrid stroke="#e5e7eb" />
+                  <PolarAngleAxis
+                    dataKey="category"
+                    tick={{ fill: '#374151', fontSize: 12 }}
+                  />
+                  <PolarRadiusAxis
+                    angle={90}
+                    domain={[0, 10]}
+                    tick={{ fill: '#6b7280', fontSize: 10 }}
+                  />
+                  <Radar
+                    name="Score"
+                    dataKey="score"
+                    stroke="#6495ED"
+                    fill="#6495ED"
+                    fillOpacity={0.6}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                {categories.map((category) => (
+                  <div key={category.name} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <span className="font-medium text-sm">
+                      {category.displayName}
+                    </span>
+                    <span className={`font-bold ${getScoreColor(category.score)}`}>
+                      {category.score}/10
+                    </span>
+                  </div>
                 ))}
               </div>
-            ) : (
-              <p className="text-gray-500 italic">
-                {t('assessmentResults.noStrengths')}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-              <AlertCircle className="h-5 w-5 text-yellow-600" />
-              {t('assessmentResults.areasForDevelopment')}
-            </h3>
-            {areasForDevelopment.length > 0 ? (
-              <div className="space-y-3">
-                {areasForDevelopment.map((category) => (
-                  <Card key={category.name} className="bg-yellow-50">
-                    <CardContent className="pt-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-semibold">
-                          {t(`categoryNames.${category.name}`)}
-                        </span>
-                        <Badge className={`${getScoreBgColor(category.score)} ${getScoreColor(category.score)}`}>
-                          {category.score}/10
-                        </Badge>
-                      </div>
-                      {category.feedback.weaknesses && (
-                        <p className="text-sm text-gray-700 mt-2">
-                          {category.feedback.weaknesses}
-                        </p>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500 italic">
-                {t('assessmentResults.noWeaknesses')}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-3">
-              {t('assessmentResults.allCategories')}
-            </h3>
-            <div className="space-y-3">
-              {sortedCategories.map((category) => (
-                <Card key={category.name}>
-                  <CardContent className="pt-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium">
-                        {t(`categoryNames.${category.name}`)}
-                      </span>
-                      <span className={`font-bold ${getScoreColor(category.score)}`}>
-                        {category.score}/10
-                      </span>
-                    </div>
-                    <Progress value={category.score * 10} className="h-2" />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
           <div className="flex justify-end gap-3 pt-4">
             <Button
