@@ -13,6 +13,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '../contexts/LanguageContext';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
+import { generateAssessmentSummary } from '../utils/assessmentSummary';
 
 const getScoreColor = (score) => {
   if (score >= 80) return 'text-green-600';
@@ -29,7 +30,7 @@ const getRadarColor = (score) => {
 };
 
 export default function AssessmentResultsModal({ isOpen, onClose, categoryScores }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   if (!categoryScores) return null;
 
@@ -52,6 +53,9 @@ export default function AssessmentResultsModal({ isOpen, onClose, categoryScores
   const overallScore = Math.round(
     categories.reduce((sum, c) => sum + c.score, 0) / categories.length
   );
+
+  const summaryData = generateAssessmentSummary(categoryScores, language);
+  const personalizedSummary = t(`assessmentSummaries.${summaryData.summaryIndex}`);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -77,6 +81,17 @@ export default function AssessmentResultsModal({ isOpen, onClose, categoryScores
                 </span>
               </div>
               <Progress value={overallScore * 10} className="h-3" />
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200">
+            <CardContent className="pt-6">
+              <h3 className="text-lg font-semibold mb-3 text-blue-900">
+                {t('assessmentResults.personalizedSummary')}
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                {personalizedSummary}
+              </p>
             </CardContent>
           </Card>
 
