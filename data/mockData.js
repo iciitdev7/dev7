@@ -1,273 +1,287 @@
 export const mockAssessmentQuestions = [
-  // Emotional Resilience to Rejection
-  { 
-    id: 1, 
+  // Эмоциональная устойчивость (Emotional Fortitude)
+  {
+    id: 1,
     key: 'emotionalResilience1',
     textKey: 'assessmentQuestions.emotionalResilience1',
     optionsKey: 'assessmentOptions.emotionalResilience1',
-    skill: "Emotional Resilience", 
-    text: "How quickly do you bounce back after a client rejection?", 
+    skill: "Emotional Fortitude",
+    category: "Emotional Fortitude",
+    text: "How quickly do you bounce back after a client rejection?",
     options: ["Immediately", "Within an hour", "Next day", "Days later"],
     scoreValues: [100, 75, 50, 25]
   },
-  { 
-    id: 2, 
+  {
+    id: 2,
     key: 'emotionalResilience2',
     textKey: 'assessmentQuestions.emotionalResilience2',
     optionsKey: 'assessmentOptions.emotionalResilience2',
-    skill: "Emotional Resilience", 
-    text: "When facing repeated 'no's, how do you feel?", 
+    skill: "Emotional Fortitude",
+    category: "Emotional Fortitude",
+    text: "When facing repeated 'no's, how do you feel?",
     options: ["Motivated to improve", "Slightly discouraged", "Very frustrated", "Want to quit"],
     scoreValues: [100, 70, 40, 10]
   },
-  { 
-    id: 3, 
+  {
+    id: 3,
     key: 'emotionalResilience3',
     textKey: 'assessmentQuestions.emotionalResilience3',
     optionsKey: 'assessmentOptions.emotionalResilience3',
-    skill: "Emotional Resilience", 
-    text: "How do you handle criticism of your sales approach?", 
+    skill: "Emotional Fortitude",
+    category: "Emotional Fortitude",
+    text: "How do you handle criticism of your sales approach?",
     options: ["Use it to improve", "Take it personally but recover", "Feel defensive", "Avoid feedback"],
     scoreValues: [100, 65, 35, 15]
   },
-
-  // Energy and Focus Management
-  { 
-    id: 4, 
-    key: 'energyFocus1',
-    textKey: 'assessmentQuestions.energyFocus1',
-    optionsKey: 'assessmentOptions.energyFocus1',
-    skill: "Energy and Focus", 
-    text: "How often do you feel mentally drained during the workday?", 
-    options: ["Rarely", "Sometimes", "Often", "Almost always"],
-    scoreValues: [100, 70, 40, 15]
-  },
-  { 
-    id: 5, 
-    key: 'energyFocus2',
-    textKey: 'assessmentQuestions.energyFocus2',
-    optionsKey: 'assessmentOptions.energyFocus2',
-    skill: "Energy and Focus", 
-    text: "How well can you concentrate during important calls?", 
-    options: ["Fully focused", "Mostly focused", "Sometimes distracted", "Often distracted"],
-    scoreValues: [100, 75, 45, 20]
-  },
-  { 
-    id: 6, 
-    key: 'energyFocus3',
-    textKey: 'assessmentQuestions.energyFocus3',
-    optionsKey: 'assessmentOptions.energyFocus3',
-    skill: "Energy and Focus", 
-    text: "How do you maintain energy throughout long sales days?", 
-    options: ["Natural high energy", "Take strategic breaks", "Push through fatigue", "Struggle with fatigue"],
-    scoreValues: [100, 80, 50, 25]
-  },
-
-  // Confidence Building
-  { 
-    id: 7, 
-    key: 'confidence1',
-    textKey: 'assessmentQuestions.confidence1',
-    optionsKey: 'assessmentOptions.confidence1',
-    skill: "Confidence Building", 
-    text: "How confident do you feel when approaching new prospects?", 
-    options: ["Very confident", "Somewhat confident", "Nervous but manage", "Very anxious"],
-    scoreValues: [100, 70, 45, 20]
-  },
-  { 
-    id: 8, 
-    key: 'confidence2',
-    textKey: 'assessmentQuestions.confidence2',
-    optionsKey: 'assessmentOptions.confidence2',
-    skill: "Confidence Building", 
-    text: "How do you feel about your sales abilities?", 
-    options: ["Strong and improving", "Good with room to grow", "Adequate but doubting", "Lack confidence"],
-    scoreValues: [100, 75, 40, 15]
-  },
-
-  // Stress and Anxiety Management
-  { 
-    id: 9, 
+  {
+    id: 9,
     key: 'stress1',
     textKey: 'assessmentQuestions.stress1',
     optionsKey: 'assessmentOptions.stress1',
-    skill: "Stress Management", 
-    text: "How do you handle high-pressure sales situations?", 
+    skill: "Emotional Fortitude",
+    category: "Emotional Fortitude",
+    text: "How do you handle high-pressure sales situations?",
     options: ["Thrive under pressure", "Manage well", "Get somewhat anxious", "Feel overwhelmed"],
     scoreValues: [100, 75, 45, 20]
   },
-  { 
-    id: 10, 
+  {
+    id: 10,
     key: 'stress2',
     textKey: 'assessmentQuestions.stress2',
     optionsKey: 'assessmentOptions.stress2',
-    skill: "Stress Management", 
-    text: "How often do you experience sales-related anxiety?", 
+    skill: "Emotional Fortitude",
+    category: "Emotional Fortitude",
+    text: "How often do you experience sales-related anxiety?",
     options: ["Never", "Rarely", "Sometimes", "Frequently"],
     scoreValues: [100, 80, 50, 25]
   },
 
-  // Motivation and Goal Setting
-  { 
-    id: 11, 
+  // Энергия и фокус (Energy & Focus)
+  {
+    id: 4,
+    key: 'energyFocus1',
+    textKey: 'assessmentQuestions.energyFocus1',
+    optionsKey: 'assessmentOptions.energyFocus1',
+    skill: "Energy & Focus",
+    category: "Energy & Focus",
+    text: "How often do you feel mentally drained during the workday?",
+    options: ["Rarely", "Sometimes", "Often", "Almost always"],
+    scoreValues: [100, 70, 40, 15]
+  },
+  {
+    id: 5,
+    key: 'energyFocus2',
+    textKey: 'assessmentQuestions.energyFocus2',
+    optionsKey: 'assessmentOptions.energyFocus2',
+    skill: "Energy & Focus",
+    category: "Energy & Focus",
+    text: "How well can you concentrate during important calls?",
+    options: ["Fully focused", "Mostly focused", "Sometimes distracted", "Often distracted"],
+    scoreValues: [100, 75, 45, 20]
+  },
+  {
+    id: 6,
+    key: 'energyFocus3',
+    textKey: 'assessmentQuestions.energyFocus3',
+    optionsKey: 'assessmentOptions.energyFocus3',
+    skill: "Energy & Focus",
+    category: "Energy & Focus",
+    text: "How do you maintain energy throughout long sales days?",
+    options: ["Natural high energy", "Take strategic breaks", "Push through fatigue", "Struggle with fatigue"],
+    scoreValues: [100, 80, 50, 25]
+  },
+  {
+    id: 15,
+    key: 'timeManagement1',
+    textKey: 'assessmentQuestions.timeManagement1',
+    optionsKey: 'assessmentOptions.timeManagement1',
+    skill: "Energy & Focus",
+    category: "Energy & Focus",
+    text: "How well do you prioritize your daily tasks?",
+    options: ["Very organized", "Mostly organized", "Somewhat scattered", "Very disorganized"],
+    scoreValues: [100, 75, 45, 20]
+  },
+
+  // Уверенность и мотивация (Confidence & Motivation)
+  {
+    id: 7,
+    key: 'confidence1',
+    textKey: 'assessmentQuestions.confidence1',
+    optionsKey: 'assessmentOptions.confidence1',
+    skill: "Confidence & Motivation",
+    category: "Confidence & Motivation",
+    text: "How confident do you feel when approaching new prospects?",
+    options: ["Very confident", "Somewhat confident", "Nervous but manage", "Very anxious"],
+    scoreValues: [100, 70, 45, 20]
+  },
+  {
+    id: 8,
+    key: 'confidence2',
+    textKey: 'assessmentQuestions.confidence2',
+    optionsKey: 'assessmentOptions.confidence2',
+    skill: "Confidence & Motivation",
+    category: "Confidence & Motivation",
+    text: "How do you feel about your sales abilities?",
+    options: ["Strong and improving", "Good with room to grow", "Adequate but doubting", "Lack confidence"],
+    scoreValues: [100, 75, 40, 15]
+  },
+  {
+    id: 11,
     key: 'motivation1',
     textKey: 'assessmentQuestions.motivation1',
     optionsKey: 'assessmentOptions.motivation1',
-    skill: "Motivation", 
-    text: "How motivated are you to achieve your sales targets?", 
+    skill: "Confidence & Motivation",
+    category: "Confidence & Motivation",
+    text: "How motivated are you to achieve your sales targets?",
     options: ["Extremely motivated", "Very motivated", "Somewhat motivated", "Struggling with motivation"],
     scoreValues: [100, 80, 50, 25]
   },
-  { 
-    id: 12, 
+  {
+    id: 12,
     key: 'motivation2',
     textKey: 'assessmentQuestions.motivation2',
     optionsKey: 'assessmentOptions.motivation2',
-    skill: "Motivation", 
-    text: "How clear are you about your career goals?", 
+    skill: "Confidence & Motivation",
+    category: "Confidence & Motivation",
+    text: "How clear are you about your career goals?",
     options: ["Very clear path", "Generally clear", "Somewhat unclear", "Very unclear"],
     scoreValues: [100, 75, 45, 20]
   },
 
-  // Communication Skills
-  { 
-    id: 13, 
+  // Коммуникация и эмпатия (Communication & Empathy)
+  {
+    id: 13,
     key: 'communication1',
     textKey: 'assessmentQuestions.communication1',
     optionsKey: 'assessmentOptions.communication1',
-    skill: "Communication", 
-    text: "How comfortable are you with difficult conversations?", 
+    skill: "Communication & Empathy",
+    category: "Communication & Empathy",
+    text: "How comfortable are you with difficult conversations?",
     options: ["Very comfortable", "Mostly comfortable", "Somewhat uncomfortable", "Very uncomfortable"],
     scoreValues: [100, 75, 45, 20]
   },
-  { 
-    id: 14, 
+  {
+    id: 14,
     key: 'communication2',
     textKey: 'assessmentQuestions.communication2',
     optionsKey: 'assessmentOptions.communication2',
-    skill: "Communication", 
-    text: "How well do you listen to customer needs?", 
+    skill: "Communication & Empathy",
+    category: "Communication & Empathy",
+    text: "How well do you listen to customer needs?",
     options: ["Excellent listener", "Good listener", "Average listener", "Need improvement"],
     scoreValues: [100, 80, 55, 30]
   },
-
-  // Time Management
-  { 
-    id: 15, 
-    key: 'timeManagement1',
-    textKey: 'assessmentQuestions.timeManagement1',
-    optionsKey: 'assessmentOptions.timeManagement1',
-    skill: "Time Management", 
-    text: "How well do you prioritize your daily tasks?", 
-    options: ["Very organized", "Mostly organized", "Somewhat scattered", "Very disorganized"],
-    scoreValues: [100, 75, 45, 20]
-  },
-  { 
-    id: 16, 
-    key: 'timeManagement2',
-    textKey: 'assessmentQuestions.timeManagement2',
-    optionsKey: 'assessmentOptions.timeManagement2',
-    skill: "Time Management", 
-    text: "How often do you meet your deadlines?", 
-    options: ["Always", "Usually", "Sometimes", "Rarely"],
-    scoreValues: [100, 80, 50, 25]
-  },
-
-  // Relationship Building
-  { 
-    id: 17, 
+  {
+    id: 17,
     key: 'relationships1',
     textKey: 'assessmentQuestions.relationships1',
     optionsKey: 'assessmentOptions.relationships1',
-    skill: "Relationship Building", 
-    text: "How easily do you build rapport with new clients?", 
+    skill: "Communication & Empathy",
+    category: "Communication & Empathy",
+    text: "How easily do you build rapport with new clients?",
     options: ["Very easily", "Fairly easily", "With some effort", "With great difficulty"],
     scoreValues: [100, 75, 50, 25]
   },
-  { 
-    id: 18, 
+  {
+    id: 18,
     key: 'relationships2',
     textKey: 'assessmentQuestions.relationships2',
     optionsKey: 'assessmentOptions.relationships2',
-    skill: "Relationship Building", 
-    text: "How well do you maintain long-term client relationships?", 
+    skill: "Communication & Empathy",
+    category: "Communication & Empathy",
+    text: "How well do you maintain long-term client relationships?",
     options: ["Excellent", "Good", "Fair", "Poor"],
     scoreValues: [100, 80, 55, 30]
   },
-
-  // Adaptability
-  { 
-    id: 19, 
-    key: 'adaptability1',
-    textKey: 'assessmentQuestions.adaptability1',
-    optionsKey: 'assessmentOptions.adaptability1',
-    skill: "Adaptability", 
-    text: "How well do you adjust to changing market conditions?", 
-    options: ["Very adaptable", "Mostly adaptable", "Somewhat rigid", "Very rigid"],
-    scoreValues: [100, 75, 45, 20]
-  },
-  { 
-    id: 20, 
-    key: 'adaptability2',
-    textKey: 'assessmentQuestions.adaptability2',
-    optionsKey: 'assessmentOptions.adaptability2',
-    skill: "Adaptability", 
-    text: "How do you handle unexpected changes in your sales process?", 
-    options: ["Embrace change", "Adapt quickly", "Need time to adjust", "Resist change"],
-    scoreValues: [100, 80, 50, 25]
-  },
-
-  // Problem-Solving
-  { 
-    id: 21, 
-    key: 'problemSolving1',
-    textKey: 'assessmentQuestions.problemSolving1',
-    optionsKey: 'assessmentOptions.problemSolving1',
-    skill: "Problem-Solving", 
-    text: "How do you approach complex client problems?", 
-    options: ["Systematic approach", "Intuitive problem-solving", "Ask for help", "Feel overwhelmed"],
-    scoreValues: [100, 75, 50, 25]
-  },
-  { 
-    id: 22, 
-    key: 'problemSolving2',
-    textKey: 'assessmentQuestions.problemSolving2',
-    optionsKey: 'assessmentOptions.problemSolving2',
-    skill: "Problem-Solving", 
-    text: "How confident are you in finding creative solutions?", 
-    options: ["Very confident", "Somewhat confident", "Not very confident", "Lack confidence"],
-    scoreValues: [100, 70, 40, 15]
-  },
-  // Empathy and Active Listening
-  { 
-    id: 23, 
+  {
+    id: 23,
     key: 'empathy1',
     textKey: 'assessmentQuestions.empathy1',
     optionsKey: 'assessmentOptions.empathy1',
-    skill: "Empathy and Active Listening", 
-    text: "How well do you understand your clients' underlying concerns?", 
+    skill: "Communication & Empathy",
+    category: "Communication & Empathy",
+    text: "How well do you understand your clients' underlying concerns?",
     options: ["Always pick up on emotions", "Usually understand concerns", "Sometimes miss cues", "Often misunderstand needs"],
     scoreValues: [100, 75, 45, 20]
   },
-  { 
-    id: 24, 
+  {
+    id: 24,
     key: 'empathy2',
     textKey: 'assessmentQuestions.empathy2',
     optionsKey: 'assessmentOptions.empathy2',
-    skill: "Empathy and Active Listening", 
-    text: "How often do you reflect back what clients say?", 
+    skill: "Communication & Empathy",
+    category: "Communication & Empathy",
+    text: "How often do you reflect back what clients say?",
     options: ["Always paraphrase", "Often reflect", "Sometimes summarize", "Rarely reflect back"],
     scoreValues: [100, 80, 50, 25]
   },
-  { 
-    id: 25, 
+  {
+    id: 25,
     key: 'empathy3',
     textKey: 'assessmentQuestions.empathy3',
     optionsKey: 'assessmentOptions.empathy3',
-    skill: "Empathy and Active Listening", 
-    text: "How comfortable are you with emotional conversations?", 
+    skill: "Communication & Empathy",
+    category: "Communication & Empathy",
+    text: "How comfortable are you with emotional conversations?",
     options: ["Very comfortable", "Mostly comfortable", "Somewhat uncomfortable", "Very uncomfortable"],
     scoreValues: [100, 75, 45, 20]
+  },
+
+  // Адаптивность и решение проблем (Adaptability & Problem-Solving)
+  {
+    id: 19,
+    key: 'adaptability1',
+    textKey: 'assessmentQuestions.adaptability1',
+    optionsKey: 'assessmentOptions.adaptability1',
+    skill: "Adaptability & Problem-Solving",
+    category: "Adaptability & Problem-Solving",
+    text: "How well do you adjust to changing market conditions?",
+    options: ["Very adaptable", "Mostly adaptable", "Somewhat rigid", "Very rigid"],
+    scoreValues: [100, 75, 45, 20]
+  },
+  {
+    id: 20,
+    key: 'adaptability2',
+    textKey: 'assessmentQuestions.adaptability2',
+    optionsKey: 'assessmentOptions.adaptability2',
+    skill: "Adaptability & Problem-Solving",
+    category: "Adaptability & Problem-Solving",
+    text: "How do you handle unexpected changes in your sales process?",
+    options: ["Embrace change", "Adapt quickly", "Need time to adjust", "Resist change"],
+    scoreValues: [100, 80, 50, 25]
+  },
+  {
+    id: 21,
+    key: 'problemSolving1',
+    textKey: 'assessmentQuestions.problemSolving1',
+    optionsKey: 'assessmentOptions.problemSolving1',
+    skill: "Adaptability & Problem-Solving",
+    category: "Adaptability & Problem-Solving",
+    text: "How do you approach complex client problems?",
+    options: ["Systematic approach", "Intuitive problem-solving", "Ask for help", "Feel overwhelmed"],
+    scoreValues: [100, 75, 50, 25]
+  },
+  {
+    id: 22,
+    key: 'problemSolving2',
+    textKey: 'assessmentQuestions.problemSolving2',
+    optionsKey: 'assessmentOptions.problemSolving2',
+    skill: "Adaptability & Problem-Solving",
+    category: "Adaptability & Problem-Solving",
+    text: "How confident are you in finding creative solutions?",
+    options: ["Very confident", "Somewhat confident", "Not very confident", "Lack confidence"],
+    scoreValues: [100, 70, 40, 15]
+  },
+  {
+    id: 16,
+    key: 'timeManagement2',
+    textKey: 'assessmentQuestions.timeManagement2',
+    optionsKey: 'assessmentOptions.timeManagement2',
+    skill: "Adaptability & Problem-Solving",
+    category: "Adaptability & Problem-Solving",
+    text: "How often do you meet your deadlines?",
+    options: ["Always", "Usually", "Sometimes", "Rarely"],
+    scoreValues: [100, 80, 50, 25]
   }
 ];
 

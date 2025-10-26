@@ -10,18 +10,24 @@ import { ArrowLeft, ArrowRight, Brain } from 'lucide-react';
 import { mockAssessmentQuestions, mockSkills } from '../../data/mockData';
 import { useApp } from '../../contexts/AppContext';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
 import LanguageToggle from '../../components/LanguageToggle';
 import AuthGuard from '../../components/AuthGuard';
+import AssessmentResultsModal from '../../components/AssessmentResultsModal';
+import { supabase } from '../../lib/supabase';
 
 
 export default function AssessmentPage() {
   const router = useRouter();
   const { dispatch } = useApp();
   const { t } = useLanguage();
+  const { user } = useAuth();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [selectedOption, setSelectedOption] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showResultsModal, setShowResultsModal] = useState(false);
+  const [categoryScores, setCategoryScores] = useState(null);
 
   const currentQuestion = mockAssessmentQuestions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / mockAssessmentQuestions.length) * 100;
@@ -64,31 +70,57 @@ export default function AssessmentPage() {
     }
   };
 
-  const completeAssessment = (finalAnswers) => {
+  const completeAssessment = async (finalAnswers) => {
     setIsSubmitting(true);
-    
-    // Calculate average scores for each skill
-    const skillScores = {};
-    
-    // Group answers by skill
+
+    // Calculate average scores for each category
+    const categoryScoresMap = {};
+
+    // Group answers by category
     Object.values(finalAnswers).forEach(answer => {
-      if (!skillScores[answer.skill]) {
-        skillScores[answer.skill] = [];
+      const question = mockAssessmentQuestions.find(q => q.id === answer.questionId);
+      const category = question?.category || question?.skill;
+
+      if (!categoryScoresMap[category]) {
+        categoryScoresMap[category] = [];
       }
-      skillScores[answer.skill].push(answer.score);
+      categoryScoresMap[category].push(answer.score);
     });
 
-    // Calculate averages
+    // Calculate averages and convert to 0-10 scale
     const averageScores = {};
-    Object.keys(skillScores).forEach(skill => {
-      const scores = skillScores[skill];
-      averageScores[skill] = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+    Object.keys(categoryScoresMap).forEach(category => {
+      const scores = categoryScoresMap[category];
+      const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+      averageScores[category] = Math.round((avg / 100) * 10 * 10) / 10;
     });
 
-    // Update mock skills with calculated scores
+    setCategoryScores(averageScores);
+
+    // Save to Supabase if user is authenticated
+    if (user) {
+      try {
+        const { error } = await supabase
+          .from('assessment_results')
+          .insert({
+            user_id: user.id,
+            categories: averageScores,
+            answers: finalAnswers,
+            completed_at: new Date().toISOString(),
+          });
+
+        if (error) {
+          console.error('Error saving assessment:', error);
+        }
+      } catch (err) {
+        console.error('Error saving assessment:', err);
+      }
+    }
+
+    // Update mock skills with calculated scores for backward compatibility
     const updatedSkills = mockSkills.map(skill => ({
       ...skill,
-      score: averageScores[skill.shortName] || skill.score
+      score: Math.round((averageScores[skill.shortName] || 5) * 10)
     }));
 
     // Dispatch to context
@@ -96,14 +128,18 @@ export default function AssessmentPage() {
       type: 'COMPLETE_ASSESSMENT',
       payload: {
         answers: finalAnswers,
-        calculatedSkills: updatedSkills
+        calculatedSkills: updatedSkills,
+        categoryScores: averageScores
       }
     });
 
-    // Navigate to results/dashboard with slight delay to ensure save
-    setTimeout(() => {
-      router.push('/dashboard');
-    }, 500);
+    setIsSubmitting(false);
+    setShowResultsModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowResultsModal(false);
+    router.push('/dashboard');
   };
 
   return (
@@ -207,6 +243,12 @@ export default function AssessmentPage() {
         </div>
       </div>
     </div>
+
+    <AssessmentResultsModal
+      isOpen={showResultsModal}
+      onClose={handleModalClose}
+      categoryScores={categoryScores}
+    />
     </AuthGuard>
   );
 }

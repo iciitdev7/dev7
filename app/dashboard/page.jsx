@@ -1,12 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Brain, TrendingUp, Target, Clock, ArrowRight, Star } from 'lucide-react';
+import { Brain, TrendingUp, Target, Clock, ArrowRight, Star, FileText } from 'lucide-react';
 import { useApp } from '../../contexts/AppContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -14,12 +14,42 @@ import LanguageToggle from '../../components/LanguageToggle';
 import UserMenu from '../../components/UserMenu';
 import AuthGuard from '../../components/AuthGuard';
 import LoadingScreen from '../../components/LoadingScreen';
+import AssessmentResultsModal from '../../components/AssessmentResultsModal';
+import { supabase } from '../../lib/supabase';
 
 export default function DashboardPage() {
   const router = useRouter();
   const { state } = useApp();
   const { user } = useAuth();
   const { t } = useLanguage();
+  const [showResultsModal, setShowResultsModal] = useState(false);
+  const [latestAssessment, setLatestAssessment] = useState(null);
+
+  useEffect(() => {
+    const loadLatestAssessment = async () => {
+      if (!user) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('assessment_results')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('completed_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (error) {
+          console.error('Error loading assessment:', error);
+        } else if (data) {
+          setLatestAssessment(data);
+        }
+      } catch (err) {
+        console.error('Error loading assessment:', err);
+      }
+    };
+
+    loadLatestAssessment();
+  }, [user]);
 
   // Show loading screen while data is being loaded
   if (!state.dataLoaded) {
@@ -80,6 +110,16 @@ export default function DashboardPage() {
                 <Button variant="ghost" onClick={() => router.push('/settings')}>
                   Settings
                 </Button>
+                {latestAssessment && (
+                  <Button
+                    variant="ghost"
+                    onClick={() => setShowResultsModal(true)}
+                    className="flex items-center gap-2"
+                  >
+                    <FileText className="h-4 w-4" />
+                    {t('language') === 'ru' ? 'Результаты' : 'Results'}
+                  </Button>
+                )}
                 <Button variant="ghost" onClick={() => router.push('/')}>
                   {t('home')}
                 </Button>
@@ -293,6 +333,12 @@ export default function DashboardPage() {
         )}
       </div>
     </div>
+
+    <AssessmentResultsModal
+      isOpen={showResultsModal}
+      onClose={() => setShowResultsModal(false)}
+      categoryScores={latestAssessment?.categories}
+    />
    </AuthGuard>
   );
 }
