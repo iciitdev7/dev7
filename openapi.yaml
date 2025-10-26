@@ -1,0 +1,1154 @@
+openapi: 3.0.3
+info:
+  title: SalesMind API
+  description: Mental fitness platform for sales teams - API for managing user profiles, assessments, skills, drills, and progress tracking
+  version: 1.0.0
+  contact:
+    name: SalesMind Support
+    email: support@salesmind.com
+
+servers:
+  - url: https://api.salesmind.com/v1
+    description: Production server
+  - url: https://staging-api.salesmind.com/v1
+    description: Staging server
+  - url: http://localhost:3000/api
+    description: Local development server
+
+tags:
+  - name: Authentication
+    description: User authentication and session management
+  - name: User Profiles
+    description: User profile management and preferences
+  - name: Assessments
+    description: Mental skills assessment operations
+  - name: Skills
+    description: Mental skills catalog and user skill tracking
+  - name: Drills
+    description: Training exercises and completions
+  - name: Progress
+    description: User progress tracking and analytics
+
+paths:
+  /auth/signup:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      description: Create a new user account with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                  example: SecurePass123!
+                full_name:
+                  type: string
+                  example: John Doe
+      responses:
+        '201':
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate user
+      description: Login with email and password credentials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  example: SecurePass123!
+      responses:
+        '200':
+          description: Successfully authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Logout user
+      description: End the current user session
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successfully logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Logged out successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Refresh access token
+      description: Obtain a new access token using a refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refresh_token
+              properties:
+                refresh_token:
+                  type: string
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users/profile:
+    get:
+      tags:
+        - User Profiles
+      summary: Get current user profile
+      description: Retrieve the authenticated user's profile information
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    put:
+      tags:
+        - User Profiles
+      summary: Update user profile
+      description: Update the authenticated user's profile information
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                  example: Jane Smith
+                role:
+                  type: string
+                  example: Senior Sales Manager
+                company:
+                  type: string
+                  example: Acme Corp
+                language_preference:
+                  type: string
+                  enum: [en, ru]
+                  example: en
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /skills:
+    get:
+      tags:
+        - Skills
+      summary: List all available skills
+      description: Retrieve a list of all mental skills available in the platform
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: category
+          in: query
+          description: Filter skills by category
+          schema:
+            type: string
+        - name: is_active
+          in: query
+          description: Filter by active status
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: Skills retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Skill'
+                  count:
+                    type: integer
+                    example: 14
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /skills/{skillId}:
+    get:
+      tags:
+        - Skills
+      summary: Get skill details
+      description: Retrieve detailed information about a specific skill
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: skillId
+          in: path
+          required: true
+          description: Unique identifier of the skill
+          schema:
+            type: string
+            example: emotional-resilience
+      responses:
+        '200':
+          description: Skill details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillDetail'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /users/skills:
+    get:
+      tags:
+        - Skills
+      summary: Get user's skill scores
+      description: Retrieve the authenticated user's skill scores and progress
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User skills retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserSkill'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users/skills/{skillId}:
+    get:
+      tags:
+        - Skills
+      summary: Get specific user skill
+      description: Retrieve the user's score and progress for a specific skill
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: skillId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: confidence-building
+      responses:
+        '200':
+          description: User skill retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSkill'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags:
+        - Skills
+      summary: Update user skill score
+      description: Update the score for a specific skill
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: skillId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - current_score
+              properties:
+                current_score:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  example: 75
+      responses:
+        '200':
+          description: Skill score updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSkill'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /assessments:
+    get:
+      tags:
+        - Assessments
+      summary: Get user's assessments
+      description: Retrieve all assessments completed by the user
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of assessments to return
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+        - name: offset
+          in: query
+          description: Number of assessments to skip
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Assessments retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Assessment'
+                  count:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags:
+        - Assessments
+      summary: Submit new assessment
+      description: Submit a completed mental skills assessment
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - answers_data
+                - calculated_scores
+              properties:
+                total_questions:
+                  type: integer
+                  example: 25
+                answers_data:
+                  type: object
+                  description: User's answers to assessment questions
+                  example:
+                    emotionalResilience1: 2
+                    emotionalResilience2: 1
+                calculated_scores:
+                  type: object
+                  description: Calculated skill scores from assessment
+                  example:
+                    emotional-resilience: 72
+                    confidence-building: 45
+                assessment_version:
+                  type: string
+                  example: "1.0"
+      responses:
+        '201':
+          description: Assessment submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assessment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /assessments/{assessmentId}:
+    get:
+      tags:
+        - Assessments
+      summary: Get assessment details
+      description: Retrieve details of a specific assessment
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: assessmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Assessment retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assessment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /drills:
+    get:
+      tags:
+        - Drills
+      summary: List all drills
+      description: Retrieve a list of all available training drills
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: skill_id
+          in: query
+          description: Filter drills by skill
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Filter by drill type
+          schema:
+            type: string
+            enum: [form, timer, interactive, tracking]
+        - name: difficulty_level
+          in: query
+          description: Filter by difficulty
+          schema:
+            type: string
+            enum: [beginner, intermediate, advanced]
+      responses:
+        '200':
+          description: Drills retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Drill'
+                  count:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /drills/{drillId}:
+    get:
+      tags:
+        - Drills
+      summary: Get drill details
+      description: Retrieve detailed information about a specific drill
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: drillId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: abc-card
+      responses:
+        '200':
+          description: Drill details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Drill'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /drill-completions:
+    get:
+      tags:
+        - Drills
+      summary: Get user's drill completions
+      description: Retrieve the authenticated user's drill completion history
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: skill_id
+          in: query
+          description: Filter by skill
+          schema:
+            type: string
+        - name: start_date
+          in: query
+          description: Filter completions from this date
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: Filter completions until this date
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Drill completions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DrillCompletion'
+                  count:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags:
+        - Drills
+      summary: Record drill completion
+      description: Submit a completed drill session
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - drill_id
+                - skill_id
+                - duration_seconds
+              properties:
+                drill_id:
+                  type: string
+                  example: abc-card
+                skill_id:
+                  type: string
+                  example: emotional-resilience
+                duration_seconds:
+                  type: integer
+                  minimum: 0
+                  example: 480
+                score:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  example: 85
+                completion_data:
+                  type: object
+                  description: Additional data specific to the drill
+                  example:
+                    activating_event: "Client rejected my proposal"
+                    belief: "I'm not good enough"
+                    consequence: "Felt discouraged"
+      responses:
+        '201':
+          description: Drill completion recorded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DrillCompletion'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /progress/dashboard:
+    get:
+      tags:
+        - Progress
+      summary: Get dashboard progress data
+      description: Retrieve comprehensive progress data for the dashboard view
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Dashboard progress data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgressDashboard'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /progress/weekly:
+    get:
+      tags:
+        - Progress
+      summary: Get weekly progress
+      description: Retrieve weekly progress statistics
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: week_offset
+          in: query
+          description: Number of weeks to offset from current week (0 = current week, 1 = last week, etc.)
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Weekly progress retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  week_start:
+                    type: string
+                    format: date
+                  week_end:
+                    type: string
+                    format: date
+                  daily_progress:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          format: date
+                        drills_completed:
+                          type: integer
+                        total_time_minutes:
+                          type: integer
+                        skills_practiced:
+                          type: array
+                          items:
+                            type: string
+                  total_drills_completed:
+                    type: integer
+                  total_time_minutes:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /progress/streak:
+    get:
+      tags:
+        - Progress
+      summary: Get current streak
+      description: Retrieve the user's current activity streak
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Streak retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  current_streak:
+                    type: integer
+                    description: Number of consecutive days with activity
+                    example: 5
+                  longest_streak:
+                    type: integer
+                    description: Longest streak ever achieved
+                    example: 12
+                  last_activity_date:
+                    type: string
+                    format: date
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /progress/skill-improvements:
+    get:
+      tags:
+        - Progress
+      summary: Get skill improvements
+      description: Retrieve skill score improvements over time
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: period
+          in: query
+          description: Time period for improvements
+          schema:
+            type: string
+            enum: [week, month, quarter, year, all]
+            default: month
+      responses:
+        '200':
+          description: Skill improvements retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        skill_id:
+                          type: string
+                        skill_name:
+                          type: string
+                        initial_score:
+                          type: integer
+                        current_score:
+                          type: integer
+                        improvement:
+                          type: integer
+                        improvement_percentage:
+                          type: number
+                          format: float
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from login or signup
+
+  schemas:
+    AuthResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        refresh_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          description: Token expiration time in seconds
+          example: 3600
+        user:
+          $ref: '#/components/schemas/User'
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 550e8400-e29b-41d4-a716-446655440000
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        created_at:
+          type: string
+          format: date-time
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        full_name:
+          type: string
+          example: John Doe
+        role:
+          type: string
+          example: Sales Representative
+        company:
+          type: string
+          example: Tech Solutions Inc
+        language_preference:
+          type: string
+          enum: [en, ru]
+          example: en
+        onboarding_completed:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Skill:
+      type: object
+      properties:
+        id:
+          type: string
+          example: emotional-resilience
+        name:
+          type: string
+          example: Emotional Resilience to Rejection
+        short_name:
+          type: string
+          example: Emotional Resilience
+        description:
+          type: string
+          example: Build mental toughness to bounce back quickly from rejection and maintain motivation.
+        icon:
+          type: string
+          example: 🛡️
+        methodologies:
+          type: array
+          items:
+            type: string
+          example: ["Cognitive Behavioral Therapy (CBT)", "Self-compassion techniques"]
+        category:
+          type: string
+          example: general
+        is_active:
+          type: boolean
+          example: true
+
+    SkillDetail:
+      allOf:
+        - $ref: '#/components/schemas/Skill'
+        - type: object
+          properties:
+            drills:
+              type: array
+              items:
+                $ref: '#/components/schemas/Drill'
+            user_score:
+              type: integer
+              minimum: 0
+              maximum: 100
+              example: 72
+
+    UserSkill:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        skill_id:
+          type: string
+          example: confidence-building
+        skill_name:
+          type: string
+          example: Confidence Building
+        current_score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 45
+        initial_score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 30
+        improvement:
+          type: integer
+          example: 15
+        last_updated:
+          type: string
+          format: date-time
+
+    Drill:
+      type: object
+      properties:
+        id:
+          type: string
+          example: abc-card
+        skill_id:
+          type: string
+          example: emotional-resilience
+        title:
+          type: string
+          example: ABC Card Analysis
+        description:
+          type: string
+          example: Identify and challenge negative thought patterns after rejection
+        type:
+          type: string
+          enum: [form, timer, interactive, tracking]
+          example: form
+        component:
+          type: string
+          example: AbcCardDrill
+        duration_minutes:
+          type: integer
+          example: 10
+        difficulty_level:
+          type: string
+          enum: [beginner, intermediate, advanced]
+          example: beginner
+        is_active:
+          type: boolean
+          example: true
+        completion_count:
+          type: integer
+          description: Number of times user has completed this drill
+          example: 3
+
+    DrillCompletion:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        drill_id:
+          type: string
+          example: abc-card
+        drill_title:
+          type: string
+          example: ABC Card Analysis
+        skill_id:
+          type: string
+          example: emotional-resilience
+        skill_name:
+          type: string
+          example: Emotional Resilience
+        completed_at:
+          type: string
+          format: date-time
+        duration_seconds:
+          type: integer
+          example: 480
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 85
+        completion_data:
+          type: object
+          description: Drill-specific completion data
+
+    Assessment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        completed_at:
+          type: string
+          format: date-time
+        total_questions:
+          type: integer
+          example: 25
+        answers_data:
+          type: object
+          description: User's answers to assessment questions
+        calculated_scores:
+          type: object
+          description: Calculated skill scores
+          example:
+            emotional-resilience: 72
+            confidence-building: 45
+            stress-management: 75
+        assessment_version:
+          type: string
+          example: "1.0"
+
+    ProgressDashboard:
+      type: object
+      properties:
+        overall_score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Average score across all skills
+          example: 68
+        total_drills_completed:
+          type: integer
+          example: 23
+        current_streak:
+          type: integer
+          description: Consecutive days with activity
+          example: 5
+        total_time_minutes:
+          type: integer
+          description: Total time spent on drills
+          example: 245
+        priority_skill:
+          type: object
+          description: Recommended skill to focus on
+          properties:
+            skill_id:
+              type: string
+            skill_name:
+              type: string
+            current_score:
+              type: integer
+        recent_activities:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+              activity:
+                type: string
+              skill:
+                type: string
+              duration:
+                type: string
+        weekly_progress:
+          type: array
+          description: Last 7 days of activity
+          items:
+            type: object
+            properties:
+              day:
+                type: string
+              completed:
+                type: integer
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Invalid request
+        message:
+          type: string
+          example: The provided data is invalid
+        status_code:
+          type: integer
+          example: 400
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    Unauthorized:
+      description: Unauthorized - authentication required or invalid token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Unauthorized
+            message: Authentication token is missing or invalid
+            status_code: 401
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Not Found
+            message: The requested resource does not exist
+            status_code: 404
