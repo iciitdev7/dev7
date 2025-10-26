@@ -456,6 +456,52 @@ const en = {
     empathy1: ["Always pick up on emotions", "Usually understand concerns", "Sometimes miss cues", "Often misunderstand needs"],
     empathy2: ["Always paraphrase", "Often reflect", "Sometimes summarize", "Rarely reflect back"],
     empathy3: ["Very comfortable", "Mostly comfortable", "Somewhat uncomfortable", "Very uncomfortable"]
+  },
+
+  // Assessment Results Modal
+  assessmentResults: {
+    title: 'Your Assessment Results',
+    description: 'Here is your skills analysis across five key categories',
+    overallScore: 'Overall Score',
+    yourStrengths: 'Your Strengths',
+    areasForDevelopment: 'Areas for Development',
+    allCategories: 'All Categories',
+    noStrengths: 'Continue working on all categories to achieve optimal results.',
+    noWeaknesses: 'Great job! All your skills are at a high level.',
+    startTraining: 'Start Training',
+  },
+
+  // Category Names
+  categoryNames: {
+    'Emotional Fortitude': 'Emotional Fortitude',
+    'Energy & Focus': 'Energy & Focus',
+    'Confidence & Motivation': 'Confidence & Motivation',
+    'Communication & Empathy': 'Communication & Empathy',
+    'Adaptability & Problem-Solving': 'Adaptability & Problem-Solving',
+  },
+
+  // Category Feedback
+  categoryFeedback: {
+    'Emotional Fortitude': {
+      strengths: 'You handle rejection and pressure well, bouncing back quickly from setbacks.',
+      weaknesses: 'Working on emotional resilience will help you recover faster from rejection and maintain motivation.',
+    },
+    'Energy & Focus': {
+      strengths: 'You maintain strong focus and energy levels throughout your workday.',
+      weaknesses: 'Improving your energy management and focus techniques will boost your daily productivity.',
+    },
+    'Confidence & Motivation': {
+      strengths: 'You demonstrate solid confidence and clear motivation in your sales approach.',
+      weaknesses: 'Building confidence and clarifying your goals will enhance your sales effectiveness.',
+    },
+    'Communication & Empathy': {
+      strengths: 'You excel at understanding clients and building meaningful connections.',
+      weaknesses: 'Developing active listening and empathy skills will strengthen your client relationships.',
+    },
+    'Adaptability & Problem-Solving': {
+      strengths: 'You adapt well to change and approach problems with creative solutions.',
+      weaknesses: 'Enhancing flexibility and problem-solving skills will help you navigate challenges more effectively.',
+    },
   }
 };
 
@@ -905,6 +951,52 @@ const ru = {
     empathy1: ["Всегда улавливаю эмоции", "Обычно понимаю заботы", "Иногда упускаю сигналы", "Часто неправильно понимаю потребности"],
     empathy2: ["Всегда перефразирую", "Часто отражаю", "Иногда резюмирую", "Редко отражаю обратно"],
     empathy3: ["Очень комфортно", "В основном комфортно", "Несколько некомфортно", "Очень некомфортно"]
+  },
+
+  // Assessment Results Modal
+  assessmentResults: {
+    title: 'Результаты вашей оценки',
+    description: 'Вот анализ ваших навыков по пяти ключевым категориям',
+    overallScore: 'Общий балл',
+    yourStrengths: 'Ваши сильные стороны',
+    areasForDevelopment: 'Области для развития',
+    allCategories: 'Все категории',
+    noStrengths: 'Продолжайте работать над всеми категориями для достижения оптимальных результатов.',
+    noWeaknesses: 'Отличная работа! Все ваши навыки на высоком уровне.',
+    startTraining: 'Начать тренировку',
+  },
+
+  // Category Names
+  categoryNames: {
+    'Emotional Fortitude': 'Эмоциональная устойчивость',
+    'Energy & Focus': 'Энергия и фокус',
+    'Confidence & Motivation': 'Уверенность и мотивация',
+    'Communication & Empathy': 'Коммуникация и эмпатия',
+    'Adaptability & Problem-Solving': 'Адаптивность и решение проблем',
+  },
+
+  // Category Feedback
+  categoryFeedback: {
+    'Emotional Fortitude': {
+      strengths: 'Вы хорошо справляетесь с отказами и давлением, быстро восстанавливаетесь после неудач.',
+      weaknesses: 'Работа над эмоциональной устойчивостью поможет вам быстрее восстанавливаться после отказов и поддерживать мотивацию.',
+    },
+    'Energy & Focus': {
+      strengths: 'Вы поддерживаете сильную концентрацию и высокий уровень энергии в течение рабочего дня.',
+      weaknesses: 'Улучшение управления энергией и техник концентрации повысит вашу ежедневную продуктивность.',
+    },
+    'Confidence & Motivation': {
+      strengths: 'Вы демонстрируете солидную уверенность и четкую мотивацию в вашем подходе к продажам.',
+      weaknesses: 'Построение уверенности и прояснение ваших целей повысит вашу эффективность в продажах.',
+    },
+    'Communication & Empathy': {
+      strengths: 'Вы превосходно понимаете клиентов и строите значимые связи.',
+      weaknesses: 'Развитие навыков активного слушания и эмпатии укрепит ваши отношения с клиентами.',
+    },
+    'Adaptability & Problem-Solving': {
+      strengths: 'Вы хорошо адаптируетесь к изменениям и подходите к проблемам с креативными решениями.',
+      weaknesses: 'Повышение гибкости и навыков решения проблем поможет вам более эффективно преодолевать трудности.',
+    },
   }
 };
 
