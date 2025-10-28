@@ -808,10 +808,10 @@ const ru = {
   whatIfScenariosDesc: 'Практикуйте адаптацию подхода при неожиданных изменениях контекста',
   perspectiveReframe: 'Переосмысление перспективы',
   perspectiveReframeDesc: 'Оспаривайте жесткое мышление, исследуя множественные точки зрения',
-  microExposure: 'Микровоздействие',
+  microExposure: 'Микро-экспозиция',
   microExposureDesc: 'Мысленно прорепетируйте первые 20 секунд звонка три раза',
-  woopExercise: 'УПП Упражнение',
-  woopExerciseDesc: 'Запланируйте свой первый звонок дня методом УПП',
+  woopExercise: 'Упражнение WOOP',
+  woopExerciseDesc: 'Запланируйте свой первый звонок дня методом WOOP (Желание-Результат-Препятствие-План)',
   oneOutcomeThreeActions: 'Один результат + три ведущих действия',
   oneOutcomeThreeActionsDesc: 'Определите один ключевой результат и три конкретных действия для его достижения ежедневно',
   sixtySecondMiniRetro: 'Шестидесятисекундная мини-ретроспектива',
@@ -954,6 +954,7 @@ const ru = {
   reflections: 'Отражения',
   alternatives: 'Альтернативы',
   adaptations: 'Адаптации',
+  rehearsals: 'Репетиции',
 
   // Assessment Questions
   assessmentQuestions: {
