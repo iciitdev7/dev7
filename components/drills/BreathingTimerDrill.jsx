@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Play, Pause, RotateCcw, CheckCircle2 } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function BreathingTimerDrill({ drill, onComplete, onCancel }) {
+  const { t } = useLanguage();
   const [timeLeft, setTimeLeft] = useState(90); // 90 seconds
   const [isRunning, setIsRunning] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -91,13 +93,13 @@ export default function BreathingTimerDrill({ drill, onComplete, onCancel }) {
   const getPhaseInstruction = () => {
     switch (phase) {
       case 'ready':
-        return 'Get comfortable and prepare to begin';
+        return t('drills.breathingTimer.ready');
       case 'inhale':
-        return 'Breathe in slowly through your nose';
+        return t('drills.breathingTimer.inhale');
       case 'hold':
-        return 'Hold your breath gently';
+        return t('drills.breathingTimer.hold');
       case 'exhale':
-        return 'Breathe out slowly through your mouth';
+        return t('drills.breathingTimer.exhale');
       default:
         return '';
     }
@@ -124,19 +126,19 @@ export default function BreathingTimerDrill({ drill, onComplete, onCancel }) {
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="h-8 w-8 text-green-600" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Well Done!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('drills.breathingTimer.wellDone')}</h2>
           <p className="text-gray-600 mb-4">
-            You've completed the 90-second reset breathing exercise. This technique helps activate your parasympathetic nervous system and reset your emotional state.
+            {t('drills.breathingTimer.completionMessage')}
           </p>
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
             <div className="grid grid-cols-2 gap-4 text-center">
               <div>
                 <p className="text-2xl font-bold text-[#6495ED]">{cycle}</p>
-                <p className="text-sm text-gray-600">Breathing Cycles</p>
+                <p className="text-sm text-gray-600">{t('drills.breathingTimer.breathingCycles')}</p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-green-600">90s</p>
-                <p className="text-sm text-gray-600">Focus Time</p>
+                <p className="text-sm text-gray-600">{t('drills.breathingTimer.focusTime')}</p>
               </div>
             </div>
           </div>
@@ -158,10 +160,10 @@ export default function BreathingTimerDrill({ drill, onComplete, onCancel }) {
               <div>
                 <CardTitle className="flex items-center space-x-2">
                   <span className="text-2xl">🧘</span>
-                  <span>90-Second Reset</span>
+                  <span>{t('drills.breathingTimer.title')}</span>
                 </CardTitle>
                 <p className="text-sm text-gray-600 mt-1">
-                  4-7-8 Breathing Pattern for Emotional Reset
+                  {t('drills.breathingTimer.subtitle')}
                 </p>
               </div>
             </div>
@@ -232,7 +234,7 @@ export default function BreathingTimerDrill({ drill, onComplete, onCancel }) {
                     className="h-2"
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Phase {phaseTime + 1} of {breathingPattern[phase]} seconds
+                    {t('drills.breathingTimer.phase', { phase: phaseTime + 1, max: breathingPattern[phase] })}
                   </p>
                 </div>
               )}
@@ -246,7 +248,7 @@ export default function BreathingTimerDrill({ drill, onComplete, onCancel }) {
                 className="flex items-center space-x-2"
               >
                 <RotateCcw className="h-4 w-4" />
-                <span>Reset</span>
+                <span>{t('drills.breathingTimer.reset')}</span>
               </Button>
 
               <Button
@@ -257,12 +259,12 @@ export default function BreathingTimerDrill({ drill, onComplete, onCancel }) {
                 {isRunning ? (
                   <>
                     <Pause className="h-5 w-5" />
-                    <span>Pause</span>
+                    <span>{t('drills.breathingTimer.pause')}</span>
                   </>
                 ) : (
                   <>
                     <Play className="h-5 w-5" />
-                    <span>{timeLeft === 90 ? 'Start' : 'Resume'}</span>
+                    <span>{timeLeft === 90 ? t('drills.breathingTimer.start') : t('drills.breathingTimer.resume')}</span>
                   </>
                 )}
               </Button>
@@ -272,11 +274,11 @@ export default function BreathingTimerDrill({ drill, onComplete, onCancel }) {
             <div className="grid grid-cols-2 gap-4 pt-4 max-w-sm mx-auto">
               <div className="text-center p-3 bg-gray-50 rounded-lg">
                 <p className="text-lg font-bold text-[#6495ED]">{cycle}</p>
-                <p className="text-xs text-gray-600">Cycles Complete</p>
+                <p className="text-xs text-gray-600">{t('drills.breathingTimer.cyclesComplete')}</p>
               </div>
               <div className="text-center p-3 bg-gray-50 rounded-lg">
                 <p className="text-lg font-bold text-green-600">{Math.round(cycleProgress)}%</p>
-                <p className="text-xs text-gray-600">Session Progress</p>
+                <p className="text-xs text-gray-600">{t('drills.breathingTimer.sessionProgress')}</p>
               </div>
             </div>
           </div>
@@ -286,13 +288,13 @@ export default function BreathingTimerDrill({ drill, onComplete, onCancel }) {
       {/* Instructions */}
       <Card className="border-0 shadow-lg bg-blue-50">
         <CardContent className="p-4">
-          <h3 className="font-medium text-gray-900 mb-2">4-7-8 Breathing Instructions:</h3>
+          <h3 className="font-medium text-gray-900 mb-2">{t('drills.breathingTimer.instructions')}</h3>
           <div className="space-y-1 text-sm text-gray-700">
-            <p>• <strong>Inhale</strong> through your nose for 4 seconds</p>
-            <p>• <strong>Hold</strong> your breath for 7 seconds</p>
-            <p>• <strong>Exhale</strong> through your mouth for 8 seconds</p>
+            <p>• <strong>{t('drills.breathingTimer.inhaleInstruction')}</strong></p>
+            <p>• <strong>{t('drills.breathingTimer.holdInstruction')}</strong></p>
+            <p>• <strong>{t('drills.breathingTimer.exhaleInstruction')}</strong></p>
             <p className="text-xs text-gray-600 mt-2">
-              This technique helps activate your body's relaxation response and reset your emotional state after challenging interactions.
+              {t('drills.breathingTimer.techniqueNote')}
             </p>
           </div>
         </CardContent>

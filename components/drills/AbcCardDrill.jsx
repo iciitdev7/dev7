@@ -7,8 +7,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { AlertCircle, CheckCircle2, ArrowLeft, Lightbulb } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function AbcCardDrill({ drill, onComplete, onCancel }) {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     activatingEvent: '',
     beliefs: '',
@@ -71,32 +73,32 @@ export default function AbcCardDrill({ drill, onComplete, onCancel }) {
 
   const stepContent = {
     1: {
-      title: 'A - Activating Event',
-      description: 'Describe the specific situation that triggered your emotional response. Be objective and factual.',
-      placeholder: 'Example: The client said "no" to my proposal after a 30-minute presentation...',
+      title: t('drills.abcCard.activatingEvent.title'),
+      description: t('drills.abcCard.activatingEvent.description'),
+      placeholder: t('drills.abcCard.activatingEvent.placeholder'),
       icon: '🎯',
-      tip: 'Focus on facts, not interpretations. What actually happened?'
+      tip: t('drills.abcCard.activatingEvent.tip')
     },
     2: {
-      title: 'B - Beliefs',
-      description: 'What thoughts or beliefs went through your mind about this event?',
-      placeholder: 'Example: I thought "I\'m terrible at sales, they probably think I\'m incompetent..."',
+      title: t('drills.abcCard.beliefs.title'),
+      description: t('drills.abcCard.beliefs.description'),
+      placeholder: t('drills.abcCard.beliefs.placeholder'),
       icon: '🧠',
-      tip: 'Be honest about your automatic thoughts, even if they seem irrational.'
+      tip: t('drills.abcCard.beliefs.tip')
     },
     3: {
-      title: 'C - Consequences',
-      description: 'How did you feel emotionally and what did you do as a result?',
-      placeholder: 'Example: I felt discouraged and anxious. I avoided making calls for the rest of the day...',
+      title: t('drills.abcCard.consequences.title'),
+      description: t('drills.abcCard.consequences.description'),
+      placeholder: t('drills.abcCard.consequences.placeholder'),
       icon: '💭',
-      tip: 'Include both emotional feelings and behavioral responses.'
+      tip: t('drills.abcCard.consequences.tip')
     },
     4: {
-      title: 'D - Dispute',
-      description: 'Challenge your beliefs. What evidence contradicts your negative thoughts?',
-      placeholder: 'Example: One rejection doesn\'t define my abilities. I\'ve had successful sales before...',
+      title: t('drills.abcCard.dispute.title'),
+      description: t('drills.abcCard.dispute.description'),
+      placeholder: t('drills.abcCard.dispute.placeholder'),
       icon: '⚖️',
-      tip: 'Look for evidence that contradicts your negative beliefs. Be your own advocate.'
+      tip: t('drills.abcCard.dispute.tip')
     }
   };
 
@@ -107,13 +109,13 @@ export default function AbcCardDrill({ drill, onComplete, onCancel }) {
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="h-8 w-8 text-green-600" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Great Work!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('drills.abcCard.greatWork')}</h2>
           <p className="text-gray-600 mb-4">
-            You've completed the ABC analysis. This cognitive restructuring technique helps build resilience by challenging negative thought patterns.
+            {t('drills.abcCard.completionMessage')}
           </p>
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
             <p className="text-sm text-blue-800">
-              <strong>Pro Tip:</strong> Practice this technique regularly, especially after challenging interactions. Over time, you'll automatically question negative thoughts before they impact your emotions.
+              <strong>{t('drills.abcCard.proTip')}</strong> {t('drills.abcCard.proTipMessage')}
             </p>
           </div>
         </CardContent>
@@ -136,15 +138,15 @@ export default function AbcCardDrill({ drill, onComplete, onCancel }) {
               <div>
                 <CardTitle className="flex items-center space-x-2">
                   <span className="text-2xl">{currentStep.icon}</span>
-                  <span>ABC Card Analysis</span>
+                  <span>{t('drills.abcCard.title')}</span>
                 </CardTitle>
                 <p className="text-sm text-gray-600 mt-1">
-                  Step {step} of 4 - Cognitive Behavioral Therapy Exercise
+                  {t('drills.abcCard.stepOf', { step })} - {t('drills.abcCard.subtitle')}
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-sm text-gray-500 mb-1">{Math.round((step / 4) * 100)}% Complete</div>
+              <div className="text-sm text-gray-500 mb-1">{t('drills.abcCard.percentComplete', { percent: Math.round((step / 4) * 100) })}</div>
               <div className="w-24 h-2 bg-gray-200 rounded-full">
                 <div 
                   className="h-2 bg-gradient-to-r from-[#6495ED] to-blue-600 rounded-full transition-all duration-300"
@@ -169,7 +171,7 @@ export default function AbcCardDrill({ drill, onComplete, onCancel }) {
             {/* Input Area */}
             <div className="space-y-2">
               <Label htmlFor={getCurrentField()} className="text-base font-medium">
-                Your Response
+                {t('drills.abcCard.yourResponse')}
               </Label>
               <Textarea
                 id={getCurrentField()}
@@ -198,7 +200,7 @@ export default function AbcCardDrill({ drill, onComplete, onCancel }) {
                 className="flex items-center space-x-2"
               >
                 <ArrowLeft className="h-4 w-4" />
-                <span>Previous</span>
+                <span>{t('drills.abcCard.previous')}</span>
               </Button>
 
               <div className="flex space-x-2">
@@ -221,7 +223,7 @@ export default function AbcCardDrill({ drill, onComplete, onCancel }) {
                 disabled={!isCurrentStepComplete()}
                 className="flex items-center space-x-2 bg-gradient-to-r from-[#6495ED] to-blue-600 hover:from-blue-600 hover:to-[#6495ED] text-white px-6"
               >
-                <span>{step === 4 ? 'Complete Analysis' : 'Next Step'}</span>
+                <span>{step === 4 ? t('drills.abcCard.completeAnalysis') : t('drills.abcCard.nextStep')}</span>
                 {step < 4 && <ArrowLeft className="h-4 w-4 rotate-180" />}
               </Button>
             </div>
