@@ -58,7 +58,8 @@ export default function BreathingTimerDrill({ drill, onComplete, onCancel }) {
           type: 'breathing-exercise',
           duration: 90,
           completedCycles: cycle,
-          completionTime: new Date().toISOString()
+          completionTime: new Date().toISOString(),
+          showStats: true
         });
       }, 2000);
     }

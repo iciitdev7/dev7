@@ -744,6 +744,24 @@ const en = {
       beautifulWork: 'Beautiful Work!',
       excellentWork: 'Excellent Work!'
     }
+  },
+
+  // Drill Stats Modal
+  drillStats: {
+    congratulations: 'Congratulations!',
+    completed: 'You completed: {drill}',
+    totalCompletions: 'Total Completions',
+    averageScore: 'Average Score',
+    timesCompleted: 'Times Completed',
+    progressOverTime: 'Your Progress Over Time',
+    noDataYet: 'No completion history yet. Complete this drill to see your progress!',
+    keepGoing: 'Great job, keep it up!',
+    notesPrompt: 'Take a moment to reflect on what you learned:',
+    notesPlaceholder: 'Write your thoughts, insights, or goals for next time...',
+    characters: 'characters',
+    encouragement: 'Consistency is key to mastery. Each practice session builds your skills.',
+    keepPracticing: 'Keep practicing regularly to see the best results!',
+    continue: 'Continue'
   }
 };
 
@@ -1486,6 +1504,24 @@ const ru = {
       beautifulWork: 'Прекрасная работа!',
       excellentWork: 'Превосходная работа!'
     }
+  },
+
+  // Drill Stats Modal
+  drillStats: {
+    congratulations: 'Поздравляем!',
+    completed: 'Вы завершили: {drill}',
+    totalCompletions: 'Всего завершений',
+    averageScore: 'Средний балл',
+    timesCompleted: 'Раз завершено',
+    progressOverTime: 'Ваш прогресс со временем',
+    noDataYet: 'История завершений пока отсутствует. Завершите это упражнение, чтобы увидеть свой прогресс!',
+    keepGoing: 'Отличная работа, продолжайте в том же духе!',
+    notesPrompt: 'Уделите минуту размышлению о том, что вы узнали:',
+    notesPlaceholder: 'Напишите свои мысли, идеи или цели на следующий раз...',
+    characters: 'символов',
+    encouragement: 'Последовательность - ключ к мастерству. Каждая практическая сессия развивает ваши навыки.',
+    keepPracticing: 'Продолжайте практиковаться регулярно, чтобы увидеть лучшие результаты!',
+    continue: 'Продолжить'
   }
 };
 

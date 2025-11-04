@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,6 +11,9 @@ import { mockSkills } from '../../../data/mockData';
 import { useApp } from '../../../contexts/AppContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import LanguageToggle from '../../../components/LanguageToggle';
+import AuthGuard from '../../../components/AuthGuard';
+import DrillStatsModal from '../../../components/DrillStatsModal';
+import { drillHistoryService } from '../../../lib/drillHistoryService';
 
 // Import drill components
 import AbcCardDrill from '../../../components/drills/AbcCardDrill';
@@ -52,6 +55,8 @@ export default function SkillPage({ params }) {
   const { t } = useLanguage();
   const [activeDrill, setActiveDrill] = useState(null);
   const [completedDrills, setCompletedDrills] = useState(new Set());
+  const [showStatsModal, setShowStatsModal] = useState(false);
+  const [statsData, setStatsData] = useState({ drillId: null, drillName: '', history: [] });
 
   const skill = mockSkills.find(s => s.id === params.skillId);
   
@@ -71,7 +76,7 @@ export default function SkillPage({ params }) {
     );
   }
 
-  const handleDrillComplete = (drillId, data = {}) => {
+  const handleDrillComplete = async (drillId, data = {}) => {
     // Update local state
     setCompletedDrills(prev => new Set([...prev, drillId]));
     setActiveDrill(null);
@@ -85,6 +90,22 @@ export default function SkillPage({ params }) {
         data
       }
     });
+
+    // Show stats modal if requested
+    if (data.showStats) {
+      const drill = skill.drills.find(d => d.id === drillId);
+      const userId = state.user?.id || 'demo-user';
+
+      // Fetch drill history
+      const history = await drillHistoryService.getDrillHistory(userId, drillId, 10);
+
+      setStatsData({
+        drillId: drillId,
+        drillName: drill?.name || 'Drill',
+        history: history
+      });
+      setShowStatsModal(true);
+    }
   };
 
   const isDrillCompleted = (drillId) => {
@@ -257,6 +278,16 @@ export default function SkillPage({ params }) {
           </>
         )}
       </div>
+
+      {/* Stats Modal */}
+      {showStatsModal && (
+        <DrillStatsModal
+          drillId={statsData.drillId}
+          drillName={statsData.drillName}
+          completionHistory={statsData.history}
+          onClose={() => setShowStatsModal(false)}
+        />
+      )}
       </div>
     </AuthGuard>
   );

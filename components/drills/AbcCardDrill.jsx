@@ -48,7 +48,8 @@ export default function AbcCardDrill({ drill, onComplete, onCancel }) {
         type: 'abc-analysis',
         data: formData,
         completionTime: new Date().toISOString(),
-        stepsCompleted: 4
+        stepsCompleted: 4,
+        showStats: true
       });
     }, 2000);
   };

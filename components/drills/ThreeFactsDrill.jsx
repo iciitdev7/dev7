@@ -30,7 +30,8 @@ export default function ThreeFactsDrill({ drill, onComplete, onCancel }) {
       onComplete(drill.id, {
         type: 'self-compassion',
         facts: facts.filter(fact => fact.trim().length > 0),
-        completionTime: new Date().toISOString()
+        completionTime: new Date().toISOString(),
+        showStats: true
       });
     }, 2000);
   };
